@@ -24,6 +24,7 @@ static BYTE* sAudioFileData = NULL;
 
 void LoadAudioFileIntoMemory()
 {
+	// if you change the file format you need to change a few hardcoded types/values (search for HARDCODED_FORMAT)
 	const wchar_t* filename = L"../alarm_clock_f32_stereo.raw";
 	HANDLE fileHandle;
 	
@@ -66,7 +67,7 @@ HRESULT LoadAudioBuffer(UINT32 bufferFrameCount, BYTE* pData, WAVEFORMATEX* pwfx
 	int sampleRate = pwfx->nSamplesPerSec;
 	int numChannels = pwfx->nChannels;
 
-	size_t fileSize = sAudioFileSize / sizeof(float);
+	size_t fileSize = sAudioFileSize / sizeof(float);	// HARDCODED_FORMAT: sizeof(source type)
 
 	// ok now we know we can fill it with float data!
 	float* output = (float*)pData;
@@ -77,7 +78,7 @@ HRESULT LoadAudioBuffer(UINT32 bufferFrameCount, BYTE* pData, WAVEFORMATEX* pwfx
 		return S_OK;
 	}
 
-	size_t endPosition = sDataPosition + (bufferFrameCount * 2);
+	size_t endPosition = sDataPosition + (bufferFrameCount * 2);	// HARDCODED_FORMAT: (2) for stereo, (1) for mono
 	if (endPosition > fileSize)
 		endPosition = fileSize;
 
@@ -85,12 +86,13 @@ HRESULT LoadAudioBuffer(UINT32 bufferFrameCount, BYTE* pData, WAVEFORMATEX* pwfx
 	for (size_t i = sDataPosition; i < endPosition;)
 	{
 		float l = ((float*)sAudioFileData)[i++];
-		float r = ((float*)sAudioFileData)[i++];
-		//*output++ = (float)l / 32768.0f;
+		float r = ((float*)sAudioFileData)[i++];		// HARDCODED_FORMAT: Use this read for Stereo only
+		
+		//*output++ = (float)l / 32768.0f;	// HARDCODED_FORMAT: Use this for 16 bit PCM
 		//*output++ = (float)l / 32768.0f;
 
-		*output++ = (float)l;
-		*output++ = (float)l;
+		*output++ = (float)l;				// HARDCODED_FORMAT: Use this for float32 data
+		*output++ = (float)r;
 
 	}
 

@@ -22,7 +22,7 @@ const IID IID_IAudioRenderClient = __uuidof(IAudioRenderClient);
 
 #define M_PI (3.14159265358979323846)
 
-static double sFrequency = 4000.0;		// 4 kHz
+static double sFrequency = 1700.0;		// 1.7 kHz
 static double sPhase = 0.0;
 
 
